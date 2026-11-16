@@ -145,4 +145,6 @@ function stickmanSVG({ outfit = 'suit', pose = 'idle', face = 'neutral', blink =
   </svg>`;
 }
 
-module.exports = { stickmanSVG, POSES: Object.keys(POSES), FACES: ['neutral', 'sad', 'shock', 'determined', 'happy', 'smug'], NEON, INK };
+const API = { stickmanSVG, POSES: Object.keys(POSES), FACES: ['neutral', 'sad', 'shock', 'determined', 'happy', 'smug'], NEON, INK };
+if (typeof module !== 'undefined' && module.exports) module.exports = API;
+else window.Stickman = API;

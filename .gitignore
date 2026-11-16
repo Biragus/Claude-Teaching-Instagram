@@ -1,0 +1,5 @@
+node_modules/
+reels/*/out/*_video.mp4
+reels/*/out/still_*.png
+reels/*/out/sheet*.jpg
+reels/*/out/check.jpg

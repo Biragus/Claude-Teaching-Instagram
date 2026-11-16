@@ -1,0 +1,456 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Reel 01</title>
+<style>
+@font-face { font-family: 'Instrument Serif'; font-style: italic; src: url('../../engine/node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 700; src: url('../../engine/node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2') format('woff2'); }
+:root { --neon:#39FF14; --ink:#0B0E11; --card:#12171C; --line:#1E2A22; --txt:#F4F6F8; --mute:#7D8590; --dim:#3A424C; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--ink); font-family: 'Inter', sans-serif; color: var(--txt); }
+.abs { position: absolute; }
+.hide { display: none; }
+.neon { color: var(--neon); text-shadow: 0 0 24px rgba(57,255,20,.55); }
+.serif { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: 0; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.card { background: linear-gradient(180deg,#151B21,#0F1419); border: 2px solid #1F2A24; border-radius: 34px; box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(57,255,20,.04) inset; }
+
+/* background */
+#bg { inset: 0; background:
+  radial-gradient(ellipse 900px 700px at 50% 34%, rgba(57,255,20,.13), transparent 70%),
+  radial-gradient(ellipse 1200px 900px at 50% 110%, rgba(57,255,20,.06), transparent 70%), #0A0D10; }
+#grid { inset: -120px; background-image: linear-gradient(rgba(57,255,20,.055) 2px, transparent 2px), linear-gradient(90deg, rgba(57,255,20,.055) 2px, transparent 2px); background-size: 90px 90px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 85%); }
+#grey { inset: 0; background: radial-gradient(ellipse 900px 800px at 50% 40%, #3A3F47, #22252A 75%); opacity: 0; }
+#vignette { inset: 0; background: radial-gradient(ellipse 85% 75% at 50% 45%, transparent 55%, rgba(0,0,0,.6)); pointer-events: none; }
+
+/* captions */
+#cap { left: 50px; right: 50px; top: 175px; height: 280px; display: flex; align-items: center; justify-content: center; text-align: center;
+  font-family: 'Inter Display', 'Inter'; font-weight: 800; font-size: 82px; line-height: 1.08; letter-spacing: -1.5px; }
+#cap .w { display: inline-block; margin: 0 9px; transition: none; }
+#cap .w.serif { font-size: 96px; }
+#cap .todo { color: var(--dim); }
+#cap .done { color: var(--txt); }
+#cap .now { color: var(--neon); text-shadow: 0 0 30px rgba(57,255,20,.6); }
+
+/* S1 counter */
+#s1 { left: 0; right: 0; top: 540px; text-align: center; }
+#s1 .lbl { font: 600 38px Inter; color: var(--mute); letter-spacing: 6px; text-transform: uppercase; }
+#s1 .num { font-family: 'Space Grotesk'; font-weight: 700; font-size: 230px; letter-spacing: -6px; color: var(--neon); text-shadow: 0 0 60px rgba(57,255,20,.55); margin-top: 6px; }
+#s1 .bar { width: 520px; height: 10px; border-radius: 5px; background: #1A2420; margin: 24px auto 0; overflow: hidden; }
+#s1 .bar i { display: block; height: 100%; background: var(--neon); box-shadow: 0 0 20px var(--neon); }
+
+/* S2 payments */
+.pay { left: 110px; width: 860px; height: 168px; display: flex; align-items: center; padding: 0 36px; gap: 28px; }
+.pay .ic { width: 88px; height: 88px; border-radius: 26px; background: rgba(57,255,20,.12); border: 2px solid rgba(57,255,20,.35); display: grid; place-items: center; font: 700 46px 'Space Grotesk'; color: var(--neon); }
+.pay .t1 { font: 700 38px Inter; }
+.pay .t2 { font: 500 28px Inter; color: var(--mute); margin-top: 6px; }
+.pay .amt { margin-left: auto; font: 700 62px 'Space Grotesk'; color: var(--neon); text-shadow: 0 0 30px rgba(57,255,20,.5); }
+
+/* S3 price compare */
+.price { top: 500px; width: 420px; height: 470px; padding: 40px 34px; }
+.price .k { font: 600 30px Inter; color: var(--mute); letter-spacing: 3px; text-transform: uppercase; }
+.price .name { font: 800 46px 'Inter Display'; margin-top: 18px; }
+.price .val { font: 700 120px 'Space Grotesk'; letter-spacing: -3px; margin-top: 40px; }
+.price .per { font: 500 30px Inter; color: var(--mute); }
+#stamp { left: 130px; top: 830px; padding: 14px 30px; border: 6px solid var(--neon); border-radius: 18px; color: var(--neon); font: 900 54px 'Inter Display'; letter-spacing: 3px; text-shadow: 0 0 20px rgba(57,255,20,.6); box-shadow: 0 0 30px rgba(57,255,20,.35), 0 0 30px rgba(57,255,20,.25) inset; }
+
+/* S4 bubbles */
+.bub { background: #F2F3F5; color: #1A1D21; border-radius: 40px; padding: 30px 44px; font: 800 52px 'Inter Display'; box-shadow: 0 20px 50px rgba(0,0,0,.4); white-space: nowrap; }
+.bub::after { content: ''; position: absolute; left: 70px; bottom: -26px; border: 18px solid transparent; border-top: 22px solid #F2F3F5; border-left: 4px solid transparent; }
+.strike { position: absolute; left: 20px; right: 20px; top: 50%; height: 9px; background: var(--neon); border-radius: 5px; box-shadow: 0 0 18px var(--neon); transform-origin: left center; }
+
+/* S5 chat */
+#chat { left: 90px; top: 520px; width: 900px; height: 470px; padding: 34px 40px; }
+.dots i { display: inline-block; width: 18px; height: 18px; border-radius: 50%; margin-right: 10px; background: #2A3138; }
+.dots i:first-child { background: #3A4048; }
+.hdr { display: flex; align-items: center; gap: 16px; font: 700 34px Inter; }
+.hdr .tag { margin-left: auto; font: 600 26px 'JetBrains Mono'; color: var(--mute); }
+.spark { width: 46px; height: 46px; border-radius: 14px; background: var(--neon); display: grid; place-items: center; color: #08130A; font: 900 30px Inter; box-shadow: 0 0 24px rgba(57,255,20,.5); }
+#prompt { margin-top: 40px; min-height: 230px; background: #0A0E12; border: 2px solid #233028; border-radius: 26px; padding: 30px 32px; font: 500 40px/1.35 Inter; color: #E9EDF1; }
+#caret { display: inline-block; width: 4px; height: 44px; background: var(--neon); vertical-align: -8px; margin-left: 4px; }
+
+/* S6 phone + build */
+#phone { left: 380px; top: 470px; width: 400px; height: 720px; border-radius: 60px; background: #050607; border: 10px solid #22272D; box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 60px rgba(57,255,20,.15); overflow: hidden; }
+#phone .scr { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 35%, rgba(57,255,20,.18), #090C0F 70%); }
+#phone .mini { position: absolute; top: 230px; width: 100%; text-align: center; font: 700 86px 'Space Grotesk'; color: var(--neon); text-shadow: 0 0 30px rgba(57,255,20,.6); }
+#phone .cap2 { position: absolute; top: 90px; width: 100%; text-align: center; font: 800 34px 'Inter Display'; padding: 0 30px; }
+#phone .man { position: absolute; left: 10px; bottom: 30px; width: 170px; height: 272px; transform: scaleX(-1); }
+#phone .rec { position: absolute; top: 30px; right: 34px; font: 700 22px Inter; color: #FF4D4D; }
+#thislbl { left: 380px; width: 400px; top: 1215px; text-align: center; font: 600 34px 'JetBrains Mono'; color: var(--mute); }
+
+#build { left: 70px; top: 470px; width: 940px; height: 690px; padding: 34px 40px; }
+#build .p { margin-top: 26px; font: 500 30px/1.35 'JetBrains Mono'; color: var(--mute); background: #0A0E12; border: 2px solid #1E2823; border-radius: 20px; padding: 18px 24px; }
+#build .p b { color: var(--neon); font-weight: 700; }
+.row { display: flex; align-items: center; gap: 26px; height: 100px; border-bottom: 2px solid #18201C; }
+.row:last-of-type { border-bottom: none; }
+.row .st { width: 58px; height: 58px; border-radius: 50%; position: relative; flex: none; }
+.row .st.spin { border: 6px solid #22302A; border-top-color: var(--neon); }
+.row .st.ok { background: var(--neon); box-shadow: 0 0 24px rgba(57,255,20,.6); }
+.row .st.ok::after { content: ''; position: absolute; left: 18px; top: 12px; width: 14px; height: 26px; border: solid #07120A; border-width: 0 7px 7px 0; transform: rotate(45deg); }
+.row .st.wait { border: 6px solid #222A2F; }
+.row .lb { font: 700 40px Inter; }
+.row .lb.off { color: #4A535C; }
+.row .dt { margin-left: auto; font: 600 30px 'JetBrains Mono'; color: var(--mute); display: flex; align-items: center; gap: 6px; }
+.wave i { display: inline-block; width: 7px; border-radius: 4px; background: var(--neon); margin: 0 2px; vertical-align: middle; }
+.thumbs i { display: inline-block; width: 26px; height: 40px; border-radius: 6px; background: #1E2823; margin-left: 6px; }
+.thumbs i.on { background: var(--neon); box-shadow: 0 0 10px rgba(57,255,20,.6); }
+.pbar { width: 220px; height: 14px; border-radius: 7px; background: #1E2823; overflow: hidden; }
+.pbar i { display: block; height: 100%; background: var(--neon); }
+#auto { left: 300px; right: 0; top: 1190px; text-align: center; }
+#auto span { display: inline-block; padding: 20px 44px; border-radius: 60px; background: var(--neon); color: #07120A; font: 900 48px 'Inter Display'; box-shadow: 0 0 50px rgba(57,255,20,.6); }
+
+/* S7 big words */
+.big { left: 0; right: 0; text-align: center; font: 900 118px 'Inter Display'; letter-spacing: -3px; }
+.big.no { color: #5B636D; }
+.big .x { position: absolute; height: 12px; top: 54%; background: var(--neon); border-radius: 6px; box-shadow: 0 0 18px var(--neon); transform-origin: left center; }
+
+/* S8 comments */
+#cmts { left: 70px; top: 505px; width: 940px; height: 680px; padding: 0 0 0; overflow: hidden; }
+#cmts .grab { width: 90px; height: 10px; border-radius: 5px; background: #2A3138; margin: 22px auto 0; }
+#cmts .ttl { text-align: center; font: 800 36px Inter; margin-top: 22px; padding-bottom: 24px; border-bottom: 2px solid #1C2420; }
+.cm { display: flex; gap: 22px; padding: 20px 40px 0; }
+.cm.reply { padding-left: 130px; }
+.av { width: 72px; height: 72px; border-radius: 50%; flex: none; display: grid; place-items: center; font: 800 32px Inter; color: #0B0E11; }
+.cm .u { font: 700 30px Inter; color: #AEB6BF; }
+.cm .u small { font-weight: 500; color: #5B636D; margin-left: 10px; }
+.cm .m { font: 500 38px Inter; margin-top: 4px; }
+.cm .m .kw { font-weight: 900; color: var(--neon); text-shadow: 0 0 20px rgba(57,255,20,.6); letter-spacing: 1px; }
+#inp { position: absolute; left: 30px; right: 30px; bottom: 30px; height: 100px; border-radius: 50px; background: #0A0E12; border: 2px solid #26302A; display: flex; align-items: center; padding: 0 20px 0 36px; font: 600 38px Inter; }
+#inp .ph { color: #4A535C; }
+#inp .send { margin-left: auto; width: 70px; height: 70px; border-radius: 50%; background: #1E2823; display: grid; place-items: center; font: 900 34px Inter; color: #0B0E11; }
+#dm { left: 360px; right: 40px; top: 1215px; height: 150px; border-radius: 40px; background: rgba(30,36,42,.92); border: 2px solid #2C353D; display: flex; align-items: center; gap: 26px; padding: 0 34px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+#dm .ai { width: 86px; height: 86px; border-radius: 22px; background: linear-gradient(135deg,#39FF14,#13A10E); display: grid; place-items: center; font: 900 40px Inter; color: #07120A; }
+#dm .a { font: 800 34px Inter; }
+#dm .b { font: 500 32px Inter; color: #C9D1D9; margin-top: 4px; }
+#dm .now { margin-left: auto; align-self: flex-start; margin-top: 30px; font: 500 26px Inter; color: var(--mute); }
+#cta { left: 40px; right: 40px; top: 150px; text-align: center; font: 900 96px 'Inter Display'; letter-spacing: -2px; line-height: 1.05; }
+#cta .kw { display: inline-block; padding: 4px 34px 10px; border-radius: 26px; background: var(--neon); color: #07120A; box-shadow: 0 0 60px rgba(57,255,20,.7); margin-top: 10px; }
+#cta small { display: block; font: 600 36px Inter; color: #B9C1CA; letter-spacing: 0; margin-top: 16px; }
+
+/* stickman */
+#man { left: 0px; top: 1170px; width: 340px; height: 544px; transform-origin: 50% 90%; }
+#flash { left: 165px; top: 1400px; width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle, #fff 0%, rgba(57,255,20,.9) 35%, rgba(57,255,20,0) 70%); }
+</style>
+</head>
+<body>
+<div id="bg" class="abs"></div>
+<div id="grey" class="abs"></div>
+<div id="grid" class="abs"></div>
+
+<div id="cards" class="abs" style="inset:0">
+  <!-- S1 -->
+  <div id="s1" class="abs"><div class="lbl">made with Claude</div><div class="num" id="num">$0</div><div class="bar"><i id="numbar"></i></div></div>
+  <!-- S2 -->
+  <div id="p1" class="abs pay card" style="top:500px"><div class="ic">$</div><div><div class="t1">Website · local bakery</div><div class="t2">Payment received · just now</div></div><div class="amt" id="a1">+$2,000</div></div>
+  <div id="p2" class="abs pay card" style="top:688px"><div class="ic">$</div><div><div class="t1">Ad scripts · gym</div><div class="t2">Payment received · 2 min ago</div></div><div class="amt" id="a2">+$500</div></div>
+  <div id="p3" class="abs pay card" style="top:876px"><div class="ic">$</div><div><div class="t1">Short videos · café</div><div class="t2">Payment received · 5 min ago</div></div><div class="amt" id="a3">+$300</div></div>
+  <!-- S3 -->
+  <div id="c1" class="abs price card" style="left:90px"><div class="k">subscription</div><div class="name">Claude Pro</div><div class="val neon">$20</div><div class="per">per month</div></div>
+  <div id="c2" class="abs price card" style="left:570px"><div class="k">one night</div><div class="name">Dinner for two</div><div class="val" style="color:#C9D1D9">$35</div><div class="per">+ tip</div></div>
+  <div id="stamp" class="abs">✓ CHEAPER</div>
+  <!-- S4 -->
+  <div id="b1" class="abs bub" style="left:330px;top:880px">“I can't code.”<div class="strike" id="k1"></div></div>
+  <div id="b2" class="abs bub" style="left:290px;top:1040px">“I'm not a designer.”<div class="strike" id="k2"></div></div>
+  <!-- S5 -->
+  <div id="chat" class="abs card">
+    <div class="hdr"><div class="spark">✦</div>Claude<div class="tag">new chat</div></div>
+    <div id="prompt"><span id="ptxt"></span><span id="caret"></span></div>
+  </div>
+  <!-- S6 -->
+  <div id="phone" class="abs"><div class="scr"></div><div class="rec">● REC</div><div class="cap2">People are making <span class="neon serif">thousands</span></div><div class="mini">$4,850</div><div class="man" id="miniman"></div></div>
+  <div id="thislbl" class="abs">↑ this exact video</div>
+  <div id="build" class="abs card">
+    <div class="hdr"><div class="spark">✦</div>Claude is building<div class="tag">reel_01.mp4</div></div>
+    <div class="p">› <b>1 prompt:</b> “Make a 40s reel about people making money with Claude”</div>
+    <div class="row"><div class="st" id="r1s"></div><div class="lb" id="r1l">Write script</div><div class="dt" id="r1d"></div></div>
+    <div class="row"><div class="st" id="r2s"></div><div class="lb" id="r2l">Record voiceover</div><div class="dt wave" id="r2d"></div></div>
+    <div class="row"><div class="st" id="r3s"></div><div class="lb" id="r3l">Animate every scene</div><div class="dt thumbs" id="r3d"></div></div>
+    <div class="row"><div class="st" id="r4s"></div><div class="lb" id="r4l">Render file</div><div class="dt" id="r4d"><div class="pbar"><i id="r4b"></i></div><span id="r4p">0%</span></div></div>
+  </div>
+  <div id="auto" class="abs"><span>⚡ 100% automatic</span></div>
+  <!-- S7 -->
+  <div id="w1" class="abs big no" style="top:500px"><span style="position:relative">No editor.<i class="x" id="x1"></i></span></div>
+  <div id="w2" class="abs big no" style="top:650px"><span style="position:relative">No software.<i class="x" id="x2"></i></span></div>
+  <div id="w3" class="abs big" style="top:810px">One <span class="neon serif" style="font-size:136px">prompt.</span></div>
+  <div id="w4" class="abs big neon" style="top:960px;font-size:170px">10 minutes.</div>
+  <!-- S8 -->
+  <div id="cmts" class="abs card">
+    <div class="grab"></div><div class="ttl">Comments</div>
+    <div class="cm"><div class="av" style="background:#8AB4F8">M</div><div><div class="u">marco.builds<small>2m</small></div><div class="m">wait… Claude made this?? 🤯</div></div></div>
+    <div class="cm"><div class="av" style="background:#F6AE2D">S</div><div><div class="u">sara.k<small>1m</small></div><div class="m">ok I need this 🙏</div></div></div>
+    <div class="cm" id="mine"><div class="av" style="background:#E2E8F0">Y</div><div><div class="u">you<small>now</small></div><div class="m"><span class="kw">GUIDE</span></div></div></div>
+    <div class="cm reply" id="rep"><div class="av" style="background:var(--neon)">✦</div><div><div class="u">yourhandle<small>now</small></div><div class="m">Sent ✅ check your DMs</div></div></div>
+    <div id="inp"><span id="itxt" class="ph">Add a comment…</span><span id="icar" style="display:inline-block;width:3px;height:42px;background:var(--neon);margin-left:3px"></span><div class="send" id="send">↑</div></div>
+  </div>
+  <div id="dm" class="abs"><div class="ai">✦</div><div><div class="a">yourhandle</div><div class="b">Here's your full guide 📩</div></div><div class="now">now</div></div>
+</div>
+
+<div id="cap" class="abs"></div>
+<div id="cta" class="abs">Comment<br><span class="kw">GUIDE</span><small>and I'll DM you the full guide</small></div>
+<div id="flash" class="abs"></div>
+<div id="man" class="abs"></div>
+<div id="vignette" class="abs"></div>
+
+<script src="../../assets/stickman/stickman.js"></script>
+<script>
+window.NAME = 'reel01_making_money';
+window.FPS = 30;
+window.DURATION = 41.0;
+
+// ---------- sound design (seconds, file in audio/sfx, volume) ----------
+window.SFX = [
+  { t: 0.00, file: 'boom.mp3', vol: 0.9 },
+  { t: 0.25, file: 'counter.mp3', vol: 0.45 },
+  { t: 2.80, file: 'whoosh.mp3', vol: 0.5 },
+  { t: 4.55, file: 'cash.mp3', vol: 0.55 },
+  { t: 6.45, file: 'cash.mp3', vol: 0.55 },
+  { t: 8.80, file: 'cash.mp3', vol: 0.55 },
+  { t: 9.85, file: 'whoosh.mp3', vol: 0.5 },
+  { t: 12.20, file: 'swoosh.mp3', vol: 0.4 },
+  { t: 13.00, file: 'stamp.mp3', vol: 0.8 },
+  { t: 13.80, file: 'boom.mp3', vol: 0.35 },
+  { t: 15.30, file: 'notify.mp3', vol: 0.3, dur: 0.6 },
+  { t: 16.42, file: 'notify.mp3', vol: 0.3, dur: 0.6 },
+  { t: 17.75, file: 'scribble.mp3', vol: 0.45, dur: 0.7 },
+  { t: 18.40, file: 'poof.mp3', vol: 0.7 },
+  { t: 19.10, file: 'typing.mp3', vol: 0.4, dur: 1.7 },
+  { t: 20.80, file: 'whoosh.mp3', vol: 0.45 },
+  { t: 21.90, file: 'swoosh.mp3', vol: 0.4 },
+  { t: 23.00, file: 'whoosh.mp3', vol: 0.35 },
+  { t: 25.00, file: 'notify.mp3', vol: 0.28, dur: 0.5 },
+  { t: 26.40, file: 'notify.mp3', vol: 0.28, dur: 0.5 },
+  { t: 27.95, file: 'notify.mp3', vol: 0.28, dur: 0.5 },
+  { t: 29.50, file: 'notify.mp3', vol: 0.28, dur: 0.5 },
+  { t: 29.70, file: 'success.mp3', vol: 0.6 },
+  { t: 30.85, file: 'whoosh.mp3', vol: 0.45 },
+  { t: 31.00, file: 'stamp.mp3', vol: 0.5 },
+  { t: 31.90, file: 'stamp.mp3', vol: 0.5 },
+  { t: 32.80, file: 'swoosh.mp3', vol: 0.5 },
+  { t: 33.70, file: 'boom.mp3', vol: 0.7 },
+  { t: 33.72, file: 'cash.mp3', vol: 0.45 },
+  { t: 34.60, file: 'whoosh.mp3', vol: 0.45 },
+  { t: 35.85, file: 'typing.mp3', vol: 0.4, dur: 0.6 },
+  { t: 36.62, file: 'swoosh.mp3', vol: 0.4 },
+  { t: 37.40, file: 'notify.mp3', vol: 0.4, dur: 0.7 },
+  { t: 38.20, file: 'notify.mp3', vol: 0.5, dur: 0.9 },
+  { t: 38.60, file: 'success.mp3', vol: 0.35 },
+];
+
+// ---------- helpers ----------
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const prog = (t, t0, d) => clamp((t - t0) / d);
+const easeOut = (x) => 1 - Math.pow(1 - x, 3);
+const easeIO = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const back = (x) => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+function tf(el, { x = 0, y = 0, s = 1, r = 0, o = 1, sx = null }) {
+  el.style.opacity = o;
+  el.style.transform = `translate(${x}px,${y}px) scale(${sx == null ? s : sx},${s}) rotate(${r}deg)`;
+}
+// generic pop-in / slide-out between tin and tout
+function pop(el, t, tin, tout, { dy = 60, dx = 0, s0 = 0.86, exitDy = -40, exitDx = 0, d = 0.38 } = {}) {
+  if (t < tin || t > tout + 0.3) { el.style.display = 'none'; return 0; }
+  el.style.display = '';
+  const a = back(prog(t, tin, d)), e = easeIO(prog(t, tout, 0.28));
+  tf(el, { x: (1 - a) * dx + e * exitDx, y: (1 - a) * dy + e * exitDy, s: s0 + (1 - s0) * a - 0.06 * e, o: prog(t, tin, 0.14) * (1 - e) });
+  return a;
+}
+const setText = (el, s) => { if (el.textContent !== s) el.textContent = s; };
+const setHTML = (el, s) => { if (el._h !== s) { el.innerHTML = s; el._h = s; } };
+
+// ---------- captions from word timings ----------
+const EMPH = new Set(['thousands', 'claude', 'twenty', 'ask', 'proof', 'prompt', 'automatically', 'minutes', 'guide', 'dms', 'designer', 'code']);
+const W = WORDS.filter((w) => !w.text.startsWith('[') && !w.text.endsWith(']'));
+const PHRASES = [];
+{
+  let cur = [];
+  W.forEach((w, i) => {
+    cur.push(w);
+    const end = /[.,:?!]$/.test(w.text) || cur.length >= 4;
+    if (end || i === W.length - 1) { PHRASES.push(cur); cur = []; }
+  });
+  PHRASES.forEach((p, i) => { p.t0 = p[0].start - 0.08; p.t1 = i < PHRASES.length - 1 ? PHRASES[i + 1][0].start - 0.08 : p[p.length - 1].end + 0.4; });
+}
+function captions(t) {
+  const cap = $('cap');
+  const hidden = (t > 30.85 && t < 34.6) || t > 38.45;
+  const p = PHRASES.find((p) => t >= p.t0 && t < p.t1);
+  if (!p || hidden) { cap.style.opacity = 0; return; }
+  const k = back(prog(t, p.t0, 0.22));
+  tf(cap, { y: (1 - k) * 26, s: 0.94 + 0.06 * k, o: prog(t, p.t0, 0.1) });
+  const html = p.map((w) => {
+    const clean = w.text.replace(/[^A-Za-z']/g, '').toLowerCase();
+    const st = t >= w.end ? 'done' : t >= w.start - 0.04 ? 'now' : 'todo';
+    let txt = w.text.replace(/[,:]$/, '');
+    if (clean === 'twenty') txt = '$20';
+    if (clean === 'ten') txt = '10';
+    return `<span class="w ${st} ${EMPH.has(clean) ? 'serif' : ''}">${txt}</span>`;
+  }).join('');
+  setHTML(cap, html);
+}
+
+// ---------- stickman ----------
+const SCHED = [
+  [0.0, 'suit', 'hips', 'smug'],
+  [2.9, 'suit', 'pointLeft', 'neutral'],
+  [9.9, 'suit', 'shrug', 'shock'],
+  [12.15, 'suit', 'hips', 'smug'],
+  [13.8, 'hoodie', 'slump', 'sad'],
+  [17.7, 'hoodie', 'idle', 'determined'],
+  [18.55, 'suit', 'idle', 'determined'],
+  [19.1, 'suit', 'thinking', 'determined'],
+  [20.85, 'suit', 'pointUp', 'happy'],
+  [23.0, 'suit', 'pointLeft', 'neutral'],
+  [29.65, 'suit', 'celebrate', 'happy'],
+  [30.9, 'suit', 'hips', 'smug'],
+  [33.65, 'suit', 'celebrate', 'happy'],
+  [34.6, 'suit', 'phone', 'smug'],
+  [38.5, 'suit', 'phone', 'happy'],
+];
+function man(t) {
+  let cur = SCHED[0], since = 0;
+  for (const s of SCHED) if (t >= s[0]) { cur = s; since = t - s[0]; }
+  let [, outfit, pose, face] = cur;
+  const f = Math.round(t * FPS);
+  const env = ENV[f] || 0;
+  const talking = t < 38.5 && env > 0.1;
+  const blink = (t % 3.4) < 0.11 || (t > 40.2 && t < 40.35);
+  const svg = Stickman.stickmanSVG({ outfit, pose, face, blink, talk: talking ? env : null, tilt: Math.sin(t * 1.7) * 2.5, shadow: true });
+  setHTML($('man'), svg);
+  // entrance, pose-change squash, idle bob, transformation spin
+  const enter = easeOut(prog(t, 0.05, 0.45));
+  const squash = since < 0.22 ? Math.sin((since / 0.22) * Math.PI) * 0.06 : 0;
+  const k = prog(t, 18.3, 0.5);
+  const spin = k > 0 && k < 1 ? Math.abs(Math.cos(k * Math.PI * 2)) : 1;
+  const bob = Math.sin(t * 2.6) * 6 + (talking ? env * 4 : 0);
+  tf($('man'), { x: (1 - enter) * -420, y: bob, s: 1 + squash, sx: -(1 - squash * 0.6) * spin, o: 1 });
+  // transformation flash
+  const fl = prog(t, 18.42, 0.55);
+  $('flash').style.opacity = fl > 0 && fl < 1 ? 1 - fl : 0;
+  $('flash').style.transform = `scale(${1 + easeOut(fl) * 120})`;
+}
+
+// ---------- scenes ----------
+function scene1(t) {
+  pop($('s1'), t, 0.0, 2.8, { dy: 80, s0: 0.7 });
+  const c = easeOut(prog(t, 0.25, 2.1));
+  setText($('num'), '$' + Math.round(c * 4850).toLocaleString('en-US'));
+  $('numbar').style.width = c * 100 + '%';
+  $('num').style.transform = `scale(${1 + 0.05 * Math.sin(t * 30) * (c < 1 ? 1 : 0)})`;
+}
+function scene2(t) {
+  const times = [[2.9, 4.55], [5.5, 6.45], [7.45, 8.8]];
+  times.forEach(([tin, tamt], i) => {
+    pop($('p' + (i + 1)), t, tin, 9.85, { dx: 900, dy: 0, s0: 0.95, exitDx: -900, exitDy: 0 });
+    const a = $('a' + (i + 1));
+    const k = back(prog(t, tamt, 0.3));
+    a.style.opacity = prog(t, tamt, 0.08);
+    a.style.transform = `scale(${0.4 + 0.6 * k})`;
+  });
+}
+function scene3(t) {
+  pop($('c1'), t, 10.0, 13.75, { dy: 120 });
+  pop($('c2'), t, 12.2, 13.75, { dy: 120 });
+  const c2 = $('c2');
+  if (t > 13.0) c2.style.filter = 'grayscale(1) brightness(.6)'; else c2.style.filter = '';
+  const st = $('stamp');
+  if (t < 13.0 || t > 14.05) { st.style.display = 'none'; } else {
+    st.style.display = '';
+    const k = prog(t, 13.0, 0.16), e = easeIO(prog(t, 13.75, 0.28));
+    tf(st, { s: 2.4 - 1.4 * easeOut(k), r: -12, o: k * (1 - e), y: -40 * e });
+  }
+}
+function scene4(t) {
+  pop($('b1'), t, 15.3, 18.55, { dy: 40, s0: 0.5 });
+  pop($('b2'), t, 16.42, 18.55, { dy: 40, s0: 0.5 });
+  $('k1').style.transform = `scaleX(${easeOut(prog(t, 17.78, 0.22))})`;
+  $('k2').style.transform = `scaleX(${easeOut(prog(t, 18.0, 0.22))})`;
+}
+const PROMPT = 'Make me a 40-second reel about people making money with Claude…';
+function scene5(t) {
+  pop($('chat'), t, 18.9, 20.8, { dy: 100 });
+  const n = Math.floor(PROMPT.length * prog(t, 19.15, 1.55));
+  setText($('ptxt'), PROMPT.slice(0, n));
+  $('caret').style.opacity = (t * 2.2) % 1 < 0.55 ? 1 : 0;
+}
+let miniDone = false;
+function scene6(t) {
+  if (!miniDone) { $('miniman').innerHTML = Stickman.stickmanSVG({ outfit: 'suit', pose: 'hips', face: 'smug', shadow: false }); miniDone = true; }
+  pop($('phone'), t, 21.85, 22.95, { dy: 200, s0: 0.6, exitDy: -60 });
+  pop($('thislbl'), t, 22.0, 22.95, { dy: 20 });
+  pop($('build'), t, 23.0, 30.8, { dy: 140, s0: 0.9 });
+  const rows = [[24.4, 25.0], [25.4, 26.4], [26.8, 27.95], [28.4, 29.5]];
+  rows.forEach(([a, b], i) => {
+    const s = $(`r${i + 1}s`), l = $(`r${i + 1}l`);
+    const state = t >= b ? 'ok' : t >= a ? 'spin' : 'wait';
+    if (s.className !== 'st ' + state) s.className = 'st ' + state;
+    if (state === 'spin') s.style.transform = `rotate(${t * 720}deg)`; else s.style.transform = state === 'ok' ? `scale(${back(prog(t, b, 0.25))})` : '';
+    l.className = 'lb' + (state === 'wait' ? ' off' : '');
+  });
+  setText($('r1d'), t >= 25.0 ? '112 words ✓' : t >= 24.4 ? 'writing…' : '');
+  // waveform
+  const wv = [];
+  for (let i = 0; i < 18; i++) {
+    const live = t >= 25.4;
+    const h = live ? (t < 26.4 ? 10 + 34 * Math.abs(Math.sin(t * 9 + i * 1.3)) * Math.abs(Math.sin(i * 0.7 + t * 3)) : 8 + 26 * Math.abs(Math.sin(i * 1.7))) : 6;
+    wv.push(`<i style="height:${h.toFixed(0)}px;opacity:${live ? 1 : 0.25}"></i>`);
+  }
+  setHTML($('r2d'), wv.join(''));
+  const on = Math.floor(8 * prog(t, 26.8, 1.1));
+  setHTML($('r3d'), Array.from({ length: 8 }, (_, i) => `<i class="${i < on ? 'on' : ''}"></i>`).join(''));
+  const p = easeIO(prog(t, 28.4, 1.1));
+  $('r4b').style.width = p * 100 + '%';
+  setText($('r4p'), Math.round(p * 100) + '%');
+  pop($('auto'), t, 29.7, 30.8, { dy: 40, s0: 0.4 });
+}
+function scene7(t) {
+  pop($('w1'), t, 30.95, 34.55, { dy: 0, s0: 1.8 });
+  pop($('w2'), t, 31.85, 34.55, { dy: 0, s0: 1.8 });
+  pop($('w3'), t, 32.75, 34.55, { dy: 60, s0: 0.6 });
+  pop($('w4'), t, 33.65, 34.55, { dy: 0, s0: 2.2 });
+  [['x1', 31.35], ['x2', 32.25]].forEach(([id, t0]) => {
+    const x = $(id); x.style.left = '-12px'; x.style.right = '-12px';
+    x.style.transform = `scaleX(${easeOut(prog(t, t0, 0.2))})`;
+  });
+  // screen shake on "10 minutes"
+  const sh = t > 33.65 && t < 34.0 ? (1 - prog(t, 33.65, 0.35)) * 14 : 0;
+  $('cards').style.transform = sh ? `translate(${Math.sin(t * 90) * sh}px, ${Math.cos(t * 77) * sh}px)` : '';
+}
+function scene8(t) {
+  pop($('cmts'), t, 34.7, 99, { dy: 600, s0: 1 });
+  const typed = 'GUIDE'.slice(0, Math.floor(5 * prog(t, 35.9, 0.55)));
+  const it = $('itxt');
+  if (t < 35.9 || t >= 36.62) { setText(it, 'Add a comment…'); it.className = 'ph'; }
+  else { setText(it, typed); it.className = ''; }
+  $('icar').style.opacity = t >= 35.9 && t < 36.62 && (t * 2.4) % 1 < 0.6 ? 1 : 0;
+  const sendOn = t >= 36.3 && t < 36.7;
+  $('send').style.background = sendOn ? 'var(--neon)' : '#1E2823';
+  $('send').style.transform = sendOn ? `scale(${1 + 0.15 * Math.sin(prog(t, 36.3, 0.4) * Math.PI)})` : '';
+  pop($('mine'), t, 36.62, 99, { dy: 40, s0: 0.9 });
+  pop($('rep'), t, 37.4, 99, { dy: 40, s0: 0.9 });
+  pop($('dm'), t, 38.2, 99, { dx: 900, dy: 0, s0: 1 });
+  const cta = $('cta');
+  if (t < 38.45) cta.style.display = 'none';
+  else {
+    cta.style.display = '';
+    const k = back(prog(t, 38.45, 0.4));
+    tf(cta, { s: (0.7 + 0.3 * k) * (1 + 0.035 * Math.sin((t - 38.45) * 6)), o: prog(t, 38.45, 0.15) });
+  }
+}
+
+window.renderFrame = function (t) {
+  // background: slow grid drift, grey mode during the "doubt" beat
+  $('grid').style.transform = `translate(${(t * 12) % 90}px, ${(t * 20) % 90}px)`;
+  const g = prog(t, 13.8, 0.3) * (1 - prog(t, 18.42, 0.12));
+  $('grey').style.opacity = g;
+  $('grid').style.opacity = 1 - g;
+  scene1(t); scene2(t); scene3(t); scene4(t); scene5(t); scene6(t); scene7(t); scene8(t);
+  captions(t);
+  man(t);
+};
+window.renderFrame(0);
+</script>
+</body>
+</html>

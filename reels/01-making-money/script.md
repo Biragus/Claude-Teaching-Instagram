@@ -25,8 +25,8 @@
 | 3 | 8.5–12.0 | "And Claude costs twenty bucks a month. Less than a dinner out." | Claude: **$20/mo**  vs  Dinner: $35 | Split card: a receipt "Claude Pro – $20/mo" beside a plate icon "Dinner for two – $35". The Claude side gets a green ✓ stamp. | Suit · **shock** · shrug |
 | 4 | 12.0–16.5 | "I know what you're thinking. I can't code. I'm not a designer." | "I can't code." · "I'm not a designer." | The scene drains to grey. Two thought bubbles pop up above him. | **Hoodie** · **sad** · slump (the "before") |
 | 5 | 16.5–20.5 | "You don't need to. You just need to know what to ask." | You just need to know *what to ask.* | Both bubbles get struck through with a neon line. A green flash swaps the hoodie for the suit and the scene turns dark and neon again. A chat window slides in and a prompt types out: "Make me a 40-second reel about…" | Hoodie → **suit** (spin + flash) · **determined** |
-| 6 | 20.5–32.0 | "Want proof? This video. I gave Claude one prompt. It wrote the script… made the voiceover in my cloned voice… animated every scene… and rendered the file." | This video → **1 prompt** | A terminal card titled "Claude is building · reel_01.mp4". A checklist ticks in sync with the voice: ✓ Write script · ✓ Voiceover (waveform animates) · ✓ Animate 8 scenes (thumbnail strip of *this* reel, shown recursively) · ✓ Render (progress bar to 100%, "reel_01.mp4 ✓"). | Suit · **thinking** → **points** at each step |
-| 7 | 32.0–35.0 | "No editor. No software. One afternoon." | ~~Editor~~ · ~~Software~~ · **One afternoon** | Three words slam in. The first two get crossed out, then "One afternoon" glows. | Suit · **happy** · celebrate (arms up) |
+| 6 | 20.5–32.0 | "Want proof? This video. I gave Claude one prompt. It wrote the script, recorded the voiceover, animated every scene, and rendered the file. All automatically." | This video → **1 prompt** | A terminal card titled "Claude is building · reel_01.mp4". A checklist ticks in sync with the voice: ✓ Write script · ✓ Voiceover (waveform animates) · ✓ Animate 8 scenes (thumbnail strip of *this* reel, shown recursively) · ✓ Render (progress bar to 100%, "reel_01.mp4 ✓"). | Suit · **thinking** → **points** at each step |
+| 7 | 32.0–35.0 | "No editor. No software. One prompt. Ten minutes." | ~~No editor~~ · ~~No software~~ · One *prompt* · **10 minutes** | Three words slam in. The first two get crossed out, then "One afternoon" glows. | Suit · **happy** · celebrate (arms up) |
 | 8 | 35.0–42.0 | "Want the full guide? Comment **GUIDE** and I'll send it straight to your DMs." | Comment **GUIDE** 👇 | An Instagram-style comment sheet. A user types "GUIDE" and hits post, a reply appears ("Sent ✅ check your DMs"), and a DM notification slides down from the top. The word **GUIDE** pulses in neon. Hold 1.5 s for the loop. | Suit · **smug** · holding phone · wink at the end |
 
 ---
@@ -38,12 +38,15 @@
 > And Claude costs twenty bucks a month. Less than a dinner out.
 > I know what you're thinking. I can't code. I'm not a designer.
 > You don't need to. You just need to know what to ask.
-> Want proof? This video. I gave Claude one prompt. It wrote the script, made the voiceover in my cloned voice, animated every scene, and rendered the file.
-> No editor. No software. One afternoon.
+> Want proof? This video. I gave Claude one prompt. It wrote the script, recorded the voiceover, animated every scene, and rendered the file. All automatically.
+> No editor. No software. One prompt. Ten minutes.
 > Want the full guide? Comment GUIDE and I'll send it straight to your DMs.
 
 ## Notes
 - **Money lines are framed as freelance prices** (what people charge for a service), not a promise of income. That's safer with Instagram and the FTC, and still punchy.
 - **Check the $20/month price** for Claude Pro before publishing.
-- **Scene 6 is honest:** this reel really is scripted, voiced, animated and rendered by Claude.
+- **Scene 6 is honest:** this reel really is scripted, voiced, animated and rendered by Claude (the cloned voice is not mentioned on purpose).
+
+## Render
+`node engine/render.js reels/01-making-money` → `reels/01-making-money/out/reel01_making_money.mp4` (1080×1920, 30 fps, 41 s). Voice take 1 · SFX reused from the existing ElevenLabs library (no new SFX credits).
 - **The guide has to exist** before posting. Set up a ManyChat (or similar) keyword automation for "GUIDE".
